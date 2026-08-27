@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">coinmarketcap</string>
+    <string name="yes_active">Yes</string>
+    <string name="no_active">No</string>
+    <string name="coin_detail_symbol">Symbol: %s</string>
+    <string name="coin_detail_rank">Rank: %d</string>
+    <string name="coin_detail_active">Active: %s</string>
+</resources>
