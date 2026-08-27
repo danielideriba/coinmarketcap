@@ -3,6 +3,7 @@ package com.test.coinmarketcap.data.datasource
 import com.test.coinmarketcap.data.remote.CryptocurrencyMapApiService
 import com.test.coinmarketcap.data.remote.ExchangeApiService
 import com.test.coinmarketcap.data.remote.model.CryptocurrencyMapResponse
+import com.test.coinmarketcap.data.remote.model.ExchangeAssetsResponse
 import com.test.coinmarketcap.data.remote.model.ExchangeInfoResponse
 import retrofit2.Response
 import javax.inject.Inject
@@ -16,4 +17,7 @@ class CryptocurrencyDataSourceImpl @Inject constructor(
 
     override suspend fun exchangeInfo(id: String): Response<ExchangeInfoResponse> =
         exchangeInfoApi.getExchangeInfo(id, aux = "urls,logo,description,date_launched,notice,status")
+
+    override suspend fun getAssets(id: String): Response<ExchangeAssetsResponse> =
+        exchangeInfoApi.getAssets(id)
 }

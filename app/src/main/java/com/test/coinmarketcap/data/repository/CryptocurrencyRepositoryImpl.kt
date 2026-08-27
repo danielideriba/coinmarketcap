@@ -3,6 +3,7 @@ package com.test.coinmarketcap.data.repository
 import android.util.Log
 import com.test.coinmarketcap.data.datasource.CryptocurrencyDataSource
 import com.test.coinmarketcap.data.remote.model.CoinWithExchangeInfo
+import com.test.coinmarketcap.domain.models.ExchangeAssetEntity
 import com.test.coinmarketcap.domain.repository.CryptocurrencyRepository
 import com.test.coinmarketcap.utils.ApiState
 import com.test.coinmarketcap.utils.DispatchersProvider
@@ -52,5 +53,21 @@ class CryptocurrencyRepositoryImpl @Inject constructor(
         }
 
         emit(ApiState.Success(combined))
+    }.flowOn(dispatchersProvider.io())
+
+    override fun getExchangeAssets(id: Int): Flow<ApiState<List<ExchangeAssetEntity>>> = flow {
+        val result = safeApiCall { cryptocurrencyDataSource.getAssets(id.toString()) }
+        when (result) {
+            is ApiState.Success -> {
+                val entities = result.data.data.map { asset ->
+                    ExchangeAssetEntity(
+                        currencyName = asset.currency.name,
+                        priceUsd = asset.currency.priceUsd
+                    )
+                }
+                emit(ApiState.Success(entities))
+            }
+            is ApiState.Error -> emit(result)
+        }
     }.flowOn(dispatchersProvider.io())
 }

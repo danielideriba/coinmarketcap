@@ -3,7 +3,7 @@ package com.test.coinmarketcap.data.remote.model
 import com.google.gson.annotations.SerializedName
 
 data class ExchangeAssetsResponse(
-    val data: Map<String, ExchangeAsset>
+    val data: List<ExchangeAsset>
 )
 
 data class ExchangeAsset(
