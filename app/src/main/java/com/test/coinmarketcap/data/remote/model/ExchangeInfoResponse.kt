@@ -11,6 +11,10 @@ data class ExchangeInfo(
     val name: String,
     val slug: String,
     val logo: String,
+    @SerializedName("maker_fee")
+    val makerFee: Double,
+    @SerializedName("taker_fee")
+    val takerFee: Double,
     val urls: ExchangeUrls? = null,
     val description: String,
     val countries: List<String> = emptyList(),
@@ -19,11 +23,7 @@ data class ExchangeInfo(
     @SerializedName("spot_volume_usd")
     val spotVolumeUsd: Double? = null,
     @SerializedName("spot_volume_last_updated")
-    val spotVolumeLastUpdated: String? = null,
-    @SerializedName("maker_fee")
-    val makerFee: Double? = null,
-    @SerializedName("taker_fee")
-    val takerFee: Double? = null
+    val spotVolumeLastUpdated: String? = null
 )
 
 data class ExchangeUrls(

@@ -30,8 +30,8 @@ fun AppNavHost(
                 navArgument("description") { type = NavType.StringType },
                 navArgument("logo") { type = NavType.StringType },
                 navArgument("website") { type = NavType.StringType },
-                navArgument("makerFee") { type = NavType.StringType },
-                navArgument("takerFee") { type = NavType.StringType },
+                navArgument("makerFee") { type = NavType.FloatType },
+                navArgument("takerFee") { type = NavType.FloatType },
                 navArgument("dateLaunched") { type = NavType.StringType }
 
             )
@@ -42,9 +42,10 @@ fun AppNavHost(
                 description = backStackEntry.arguments?.getString("description").orEmpty(),
                 logo = backStackEntry.arguments?.getString("logo").orEmpty(),
                 website = backStackEntry.arguments?.getString("website").orEmpty(),
-                makerFee = backStackEntry.arguments?.getString("makerFee").orEmpty(),
-                takerFee = backStackEntry.arguments?.getString("takerFee").orEmpty(),
-                dateLaunched = backStackEntry.arguments?.getString("dateLaunched").orEmpty()
+                makerFee = backStackEntry.arguments?.getFloat("makerFee")?.toDouble() ?: 0.0,
+                takerFee = backStackEntry.arguments?.getFloat("takerFee")?.toDouble() ?: 0.0,
+                dateLaunched = backStackEntry.arguments?.getString("dateLaunched").orEmpty(),
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }

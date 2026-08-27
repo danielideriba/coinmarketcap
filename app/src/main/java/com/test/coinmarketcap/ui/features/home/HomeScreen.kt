@@ -1,17 +1,8 @@
 package com.test.coinmarketcap.ui.features.home
 
-import android.util.Log
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.ui.Alignment
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,17 +13,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,17 +40,16 @@ import coil3.request.crossfade
 import com.test.coinmarketcap.R
 import com.test.coinmarketcap.domain.models.MapCoinsEntity
 import com.test.coinmarketcap.ui.common.theme.CoinMarketCapTheme
-import com.test.coinmarketcap.ui.common.theme.OpacityGray
-import com.test.coinmarketcap.ui.common.theme.PersianRed700
 import com.test.coinmarketcap.ui.common.theme.GrayDark
-import com.test.coinmarketcap.ui.common.theme.SnowWhite
+import com.test.coinmarketcap.ui.common.theme.PersianRed700
 import com.test.coinmarketcap.ui.common.theme.White
+import com.test.coinmarketcap.ui.components.HeaderList
+import com.test.coinmarketcap.ui.components.ListDefaultLoadingContent
 import com.test.coinmarketcap.ui.nav.AppScreen
 import com.test.coinmarketcap.ui.viewmodel.HomeScreenViewModel
 import com.test.coinmarketcap.utils.UiState
 import com.test.coinmarketcap.utils.extensions.formatDate
 import com.test.coinmarketcap.utils.extensions.toCurrencyUsd
-import kotlin.String
 
 @Composable
 fun HomeScreen(
@@ -87,8 +80,8 @@ fun HomeScreen(
                         description = coin.description.orEmpty(),
                         logo = coin.logo,
                         website = coin.url,
-                        makerFee = coin.makerFee.orEmpty(),
-                        takerFee = coin.takerFee.orEmpty(),
+                        makerFee = coin.makerFee,
+                        takerFee = coin.takerFee,
                         dateLaunched = coin.dateLaunched
                     )
                 )
@@ -106,7 +99,7 @@ private fun MappedCoinsContent(
 ) {
     when (state) {
         is UiState.Ready -> {}
-        is UiState.Loading -> MappedCoinsLoadingContent()
+        is UiState.Loading -> ListDefaultLoadingContent()
         is UiState.Success -> MappedCoinsItems(data = state.data, onCoinClick = onCoinClick)
         is UiState.Error -> MappedCoinsErrorContent(message = state.message)
     }
@@ -126,24 +119,12 @@ private fun MappedCoinsErrorContent(message: String) {
 }
 
 @Composable
-private fun HeaderList() {
-    Text(
-        text = "Coin Market Cap - Coin list",
-        fontSize = 16.sp,
-        fontWeight = FontWeight.SemiBold,
-        color = GrayDark
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-}
-
-@Composable
 private fun MappedCoinsItems(data: List<MapCoinsEntity>, onCoinClick: (MapCoinsEntity) -> Unit) {
     Column(
         modifier = Modifier.padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        HeaderList()
+        HeaderList(text = stringResource(R.string.header_text))
         CoinLazyList(coins = data, onCoinClick = onCoinClick)
     }
 }
@@ -154,79 +135,43 @@ private fun CoinLazyList(coins: List<MapCoinsEntity>, onCoinClick: (MapCoinsEnti
         items(
             items = coins,
             key = { it.name }) { coin ->
-            Row(
+            Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onCoinClick(coin) },
-                horizontalArrangement = Arrangement.SpaceBetween
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
-                ExchangeLogo(coin)
-                Column {
-                    Text(
-                        text = coin.name,
-                        fontWeight = FontWeight.SemiBold,
-                        color = GrayDark
-                    )
-                    coin.spotVolumeUsd?.let {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ExchangeLogo(coin)
+                    Column {
                         Text(
-                            text = it.toCurrencyUsd(),
+                            text = coin.name,
                             fontWeight = FontWeight.SemiBold,
                             color = GrayDark
                         )
+                        coin.spotVolumeUsd?.let {
+                            Text(
+                                text = it.toCurrencyUsd(),
+                                fontWeight = FontWeight.SemiBold,
+                                color = GrayDark
+                            )
+                        }
                     }
-                }
-                Column(modifier = Modifier.align(Alignment.CenterVertically)) {
-                    coin.dateLaunched?.let {
-                        Text(text = it.formatDate(), color = GrayDark)
+                    Column(modifier = Modifier.align(Alignment.CenterVertically)) {
+                        coin.dateLaunched?.let {
+                            Text(text = it.formatDate(), color = GrayDark)
+                        }
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun MappedCoinsLoadingContent() {
-    val infiniteTransition = rememberInfiniteTransition(label = "shimmer")
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 0.3f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 700, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "shimmer_alpha"
-    )
-
-    Column(
-        modifier = Modifier.padding(10.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        HeaderList()
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.55f)
-                .height(14.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(OpacityGray)
-                .alpha(alpha)
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.75f)
-                .height(12.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(SnowWhite)
-                .alpha(alpha)
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.35f)
-                .height(14.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(OpacityGray)
-                .alpha(alpha)
-        )
     }
 }
 

@@ -21,7 +21,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.test.coinmarketcap.HiltTestRunner"
     }
 
     buildTypes {
@@ -65,6 +65,38 @@ android {
     }
 }
 
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    val excludes = listOf(
+        "**/R.class", "**/R$*.class", "**/BuildConfig.*", "**/Manifest*.*",
+        "**/*Test*.*", "android/**/*.*",
+        "**/*_MembersInjector*.*", "**/*Hilt*.*", "**/*_Factory*.*",
+        "**/*_ComponentTreeDeps*.*", "**/*GeneratedInjector*.*",
+        "**/*ComposableSingletons*.*", "**/*Activity*.*",
+        "**/*Screen*.*", "**/*NavHost*.*", "**/*ViewModel*.*",
+        "**/*Application*.*", "**/*Module*.*", "**/*Component*.*",
+        "**/ui/**", "**/di/**"
+    )
+
+    val debugTree = fileTree(
+        "${layout.buildDirectory.get()}/intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes"
+    ) { exclude(excludes) }
+
+    sourceDirectories.setFrom(files("src/main/java"))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(
+        fileTree(layout.buildDirectory.get()) {
+            include("jacoco/testDebugUnitTest.exec")
+        }
+    )
+}
+
 dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -88,8 +120,8 @@ dependencies {
 
     implementation(libs.kotlinx.datetime)
 
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
-    implementation("com.github.jeziellago:compose-markdown:0.5.4")
+    coreLibraryDesugaring(libs.desugar.jdk)
+    implementation(libs.compose.markdown)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
@@ -100,6 +132,8 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

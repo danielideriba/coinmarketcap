@@ -8,8 +8,8 @@ data class MapCoinsEntity(
     val description: String? = null,
     val isActive: Int,
     val logo: String,
-    val makerFee: String? = null,
-    val takerFee: String? = null,
+    val makerFee: Double? = null,
+    val takerFee: Double? = null,
     val spotVolumeUsd: Double?,
     val dateLaunched: String?
 )

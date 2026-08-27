@@ -4,6 +4,8 @@ data class CoinWithExchangeInfo(
     val id: Int,
     val name: String,
     val slug: String,
+    val makerFee: Double? = null,
+    val takerFee: Double? = null,
     val urls: ExchangeUrls? = null,
     val firstHistoricalData: String? = null,
     val lastHistoricalData: String? = null,
@@ -13,7 +15,5 @@ data class CoinWithExchangeInfo(
     val logo: String,
     val spotVolumeUsd: Double?,
     val dateLaunched: String?,
-    val description: String? = null,
-    val makerFee: Int? = null,
-    val takerFee: Int? = null,
+    val description: String? = null
 )

@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">coinmarketcap</string>
-    <string name="yes_active">Yes</string>
-    <string name="no_active">No</string>
-    <string name="coin_detail_symbol">Symbol: %s</string>
-    <string name="coin_detail_rank">Rank: %d</string>
-    <string name="coin_detail_active">Active: %s</string>
+    <string name="logo_descrition">"CoinMarketCap logo"</string>
+    <string name="header_text">"Coin Market Cap - Coin list</string>
+    <string name="back_bottom">Back</string>
+    <string name="image_content_description">%s logo</string>
+    <string name="content_error">Not available</string>
+    <string name="content_error_no_description">No description available</string>
+    <string name="see_more_button_expand">View the description</string>
+    <string name="see_more_button_hide">Hide description</string>
+    <string name="exchange_coin_list">Coin list</string>
+    <string name="details_date_launched">Date Launched</string>
+    <string name="details_maker_fee">Maker Fee</string>
+    <string name="details_taker_fee">Taker Fee</string>
+    <string name="details_website">Website</string>
 </resources>

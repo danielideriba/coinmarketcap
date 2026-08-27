@@ -14,7 +14,6 @@ class CryptocurrencyMapUseCase @Inject constructor(
 ) {
     fun invoke(limit: Int): Flow<UiState<List<MapCoinsEntity>>> {
         return cryptocurrencyRepository.mapCoins(limit).map { result ->
-            Log.i("TAG", "----RESULT---$result.data.map")
             when (result) {
                 is ApiState.Success -> UiState.Success(
                     result.data.map { item ->
@@ -22,6 +21,8 @@ class CryptocurrencyMapUseCase @Inject constructor(
                             id = item.id,
                             name = item.name,
                             url = item.urls!!.website[0],
+                            makerFee = item.makerFee,
+                            takerFee = item.takerFee,
                             description = item.description,
                             slug = item.slug,
                             isActive = item.isActive,

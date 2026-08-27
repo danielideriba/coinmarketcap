@@ -43,6 +43,8 @@ class CryptocurrencyRepositoryImpl @Inject constructor(
                 id = coin.id,
                 name = coin.name,
                 slug = coin.slug,
+                makerFee = exchangeItem?.makerFee,
+                takerFee = exchangeItem?.takerFee,
                 urls = exchangeItem?.urls,
                 description = exchangeItem?.description,
                 isActive = coin.isActive,
