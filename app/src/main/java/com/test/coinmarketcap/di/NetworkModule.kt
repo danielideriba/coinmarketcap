@@ -7,7 +7,7 @@ import com.test.coinmarketcap.data.remote.ApiClientConstants.API_KEY
 import com.test.coinmarketcap.data.remote.ApiClientConstants.HEADER_PARAM_API_KEY
 import com.test.coinmarketcap.data.remote.ApiPath.BASE_URL
 import com.test.coinmarketcap.data.remote.CryptocurrencyMapApiService
-import com.test.coinmarketcap.data.remote.ExchangeInfoApiService
+import com.test.coinmarketcap.data.remote.ExchangeApiService
 import com.test.coinmarketcap.utils.NetworkConstants.CONNECTION_TIMEOUT
 import com.test.coinmarketcap.utils.NetworkConstants.READ_TIMEOUT
 import com.test.coinmarketcap.utils.NetworkConstants.WRITE_TIMEOUT
@@ -103,6 +103,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideExchangeInfoApiService(retrofit: Retrofit): ExchangeInfoApiService =
-        retrofit.create(ExchangeInfoApiService::class.java)
+    fun provideExchangeInfoApiService(retrofit: Retrofit): ExchangeApiService =
+        retrofit.create(ExchangeApiService::class.java)
 }

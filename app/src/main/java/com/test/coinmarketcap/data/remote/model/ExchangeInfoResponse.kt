@@ -10,9 +10,9 @@ data class ExchangeInfo(
     val id: Int,
     val name: String,
     val slug: String,
-    val logo: String?,
-    val description: String?,
+    val logo: String,
     val urls: ExchangeUrls? = null,
+    val description: String,
     val countries: List<String> = emptyList(),
     @SerializedName("date_launched")
     val dateLaunched: String? = null,

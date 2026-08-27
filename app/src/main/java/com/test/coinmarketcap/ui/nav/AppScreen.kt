@@ -11,16 +11,16 @@ sealed class AppScreen(val route: String) {
 
     data object Home : AppScreen("home")
 
-    data object CoinDetail : AppScreen("detail/{id}/{name}/{description}/{logo}/{url}/{makerFee}/{takerFee}/{dateLaunched}") {
+    data object CoinDetail : AppScreen("detail/{id}/{name}/{description}/{logo}/{website}/{makerFee}/{takerFee}/{dateLaunched}") {
         fun createRoute(
             id: Int,
             name: String,
             description: String,
             logo: String,
-            url: String,
+            website: String,
             makerFee: String,
             takerFee: String,
             dateLaunched: String?
-        ) = buildRoute(id, name, description, logo, url, makerFee, takerFee, dateLaunched.orEmpty())
+        ) = buildRoute(id, name, description, logo, website, makerFee, takerFee, dateLaunched.orEmpty())
     }
 }

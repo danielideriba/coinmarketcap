@@ -4,6 +4,7 @@ data class CoinWithExchangeInfo(
     val id: Int,
     val name: String,
     val slug: String,
+    val urls: ExchangeUrls? = null,
     val firstHistoricalData: String? = null,
     val lastHistoricalData: String? = null,
     val isActive: Int,

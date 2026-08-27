@@ -89,6 +89,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
+    implementation("com.github.jeziellago:compose-markdown:0.5.4")
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

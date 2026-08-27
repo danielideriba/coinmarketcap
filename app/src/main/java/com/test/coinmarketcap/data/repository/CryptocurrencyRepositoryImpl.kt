@@ -28,14 +28,11 @@ class CryptocurrencyRepositoryImpl @Inject constructor(
         val coins = (mapResult as ApiState.Success).data.data
         val coinsIds = coins.joinToString(",") { it.id.toString() }
 
-        Log.i("TAG", "----IDS---$coinsIds")
-
         val exchangeResult = safeApiCall { cryptocurrencyDataSource.exchangeInfo(coinsIds) }
         val exchangeData = if (exchangeResult is ApiState.Success) {
-            Log.i("TAG", "----MAP---${exchangeResult.data.data}")
+            Log.i("TAG", "----MAP---" + exchangeResult.data.data)
             exchangeResult.data.data
         } else {
-            Log.i("TAG", "----MAP---EMPTY")
             emptyMap()
         }
 
@@ -45,6 +42,8 @@ class CryptocurrencyRepositoryImpl @Inject constructor(
                 id = coin.id,
                 name = coin.name,
                 slug = coin.slug,
+                urls = exchangeItem?.urls,
+                description = exchangeItem?.description,
                 isActive = coin.isActive,
                 logo = exchangeItem?.logo.orEmpty(),
                 spotVolumeUsd = exchangeItem?.spotVolumeUsd,

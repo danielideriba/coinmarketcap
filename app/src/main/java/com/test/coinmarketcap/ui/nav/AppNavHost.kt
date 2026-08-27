@@ -29,7 +29,7 @@ fun AppNavHost(
                 navArgument("name") { type = NavType.StringType },
                 navArgument("description") { type = NavType.StringType },
                 navArgument("logo") { type = NavType.StringType },
-                navArgument("url") { type = NavType.StringType },
+                navArgument("website") { type = NavType.StringType },
                 navArgument("makerFee") { type = NavType.StringType },
                 navArgument("takerFee") { type = NavType.StringType },
                 navArgument("dateLaunched") { type = NavType.StringType }
@@ -41,7 +41,7 @@ fun AppNavHost(
                 name = backStackEntry.arguments?.getString("name").orEmpty(),
                 description = backStackEntry.arguments?.getString("description").orEmpty(),
                 logo = backStackEntry.arguments?.getString("logo").orEmpty(),
-                url = backStackEntry.arguments?.getString("url").orEmpty(),
+                website = backStackEntry.arguments?.getString("website").orEmpty(),
                 makerFee = backStackEntry.arguments?.getString("makerFee").orEmpty(),
                 takerFee = backStackEntry.arguments?.getString("takerFee").orEmpty(),
                 dateLaunched = backStackEntry.arguments?.getString("dateLaunched").orEmpty()

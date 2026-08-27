@@ -86,7 +86,7 @@ fun HomeScreen(
                         name = coin.name,
                         description = coin.description.orEmpty(),
                         logo = coin.logo,
-                        url = coin.url.orEmpty(),
+                        website = coin.url,
                         makerFee = coin.makerFee.orEmpty(),
                         takerFee = coin.takerFee.orEmpty(),
                         dateLaunched = coin.dateLaunched
